@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mediaCustomTransport="clr-namespace:MediaCustomTransportMaui"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="MediaCustomTransportMaui.MainPage">
+
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <mct:TimeSpanToSecondsConverter x:Key="TimeSpanConverter"/>
+      <mct:InvertedBoolConverter x:Key="BoolConverter" />
+    </ResourceDictionary>
+  </ContentPage.Resources>
+
+  <Grid>
+    <!-- Player -->
+    <mct:MediaElement 
+      x:Name="MediaPlayer"
+      Source="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+      ShouldAutoPlay="False"
+      ShouldLoopPlayback="False"
+      HorizontalOptions="Fill"
+      ShowsPlaybackControls="False" />
+
+    <!-- Controls -->
+    <StackLayout
+      Orientation="Vertical"
+      BackgroundColor="#99000000"
+      VerticalOptions="End">
+
+      <StackLayout
+        Orientation="Horizontal"
+        VerticalOptions="End"
+        HorizontalOptions="Fill">
+        <Button
+          Text="Set Position to 02:00 (mm:ss)"
+          WidthRequest="250"
+          HeightRequest="40"
+          HorizontalOptions="StartAndExpand"
+          BackgroundColor="Transparent"
+          TextColor="White"
+          Clicked="OnSetPositionClicked"/>
+        <Label 
+          BindingContext="{x:Reference MediaPlayer}"
+          Text="{Binding CurrentState}"
+          VerticalTextAlignment="Center"
+          VerticalOptions="Center"
+          HorizontalOptions="End"
+          TextColor="White" />
+      </StackLayout>
+
+      <StackLayout
+        VerticalOptions="End"
+        Orientation="Horizontal">
+        <Button
+          Clicked="OnPlayButtonClicked"
+          Text="&#xF040C;"
+          FontFamily="materialdesignicons"
+          FontSize="18"
+          TextColor="White"
+          WidthRequest="60"
+          HeightRequest="60" 
+          IsVisible="{Binding IsPlaying, Source={RelativeSource AncestorType={x:Type mediaCustomTransport:MainPage}}, Converter={StaticResource BoolConverter}}"/>
+        <Button
+          Clicked="OnPauseButtonClicked"
+          Text="&#xF03E5;"
+          FontFamily="materialdesignicons"
+          FontSize="18"
+          TextColor="White"
+          WidthRequest="60"
+          HeightRequest="60"
+          IsVisible="{Binding IsPlaying, Source={RelativeSource AncestorType={x:Type mediaCustomTransport:MainPage}}}"/>
+        <Label 
+          BindingContext="{x:Reference MediaPlayer}"
+          VerticalOptions="Center"
+          VerticalTextAlignment="Center"
+          Text="{Binding Position, StringFormat='{0:mm\\:ss}'}"
+          TextColor="White"/>
+        <Slider
+          BindingContext="{x:Reference MediaPlayer}"
+          HeightRequest="16"
+          MinimumTrackColor="White"
+          MaximumTrackColor="LightGray"
+          ThumbColor="White"
+          HorizontalOptions="FillAndExpand"
+          VerticalOptions="Center"
+          Maximum="{Binding Duration, Converter={StaticResource TimeSpanConverter}}"
+          Value="{Binding Position, Converter={StaticResource TimeSpanConverter}}" />
+        <Label 
+          BindingContext="{x:Reference MediaPlayer}"
+          VerticalOptions="Center"
+          VerticalTextAlignment="Center"
+          Text="{Binding Duration, StringFormat='{0:mm\\:ss}'}"
+          TextColor="White"/>
+      </StackLayout>
+
+    </StackLayout>
+  </Grid>
+
+</ContentPage>
