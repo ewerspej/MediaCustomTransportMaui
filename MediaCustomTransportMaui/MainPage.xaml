@@ -20,81 +20,97 @@
       ShouldAutoPlay="False"
       ShouldLoopPlayback="False"
       HorizontalOptions="Fill"
-      ShowsPlaybackControls="False" />
+      ShouldShowPlaybackControls="False" />
 
     <!-- Controls -->
-    <StackLayout
-      Orientation="Vertical"
+    <VerticalStackLayout
       BackgroundColor="#99000000"
       VerticalOptions="End">
 
-      <StackLayout
-        Orientation="Horizontal"
+      <Grid
+        Padding="4"
         VerticalOptions="End"
-        HorizontalOptions="Fill">
+        HorizontalOptions="Fill"
+        ColumnDefinitions="2*,*">
         <Button
+          Grid.Column="0"
           Text="Set Position to 02:00 (mm:ss)"
           WidthRequest="250"
           HeightRequest="40"
-          HorizontalOptions="StartAndExpand"
+          HorizontalOptions="Start"
           BackgroundColor="Transparent"
           TextColor="White"
           Clicked="OnSetPositionClicked"/>
         <Label 
+          Grid.Column="1"
           BindingContext="{x:Reference MediaPlayer}"
           Text="{Binding CurrentState}"
           VerticalTextAlignment="Center"
           VerticalOptions="Center"
           HorizontalOptions="End"
           TextColor="White" />
-      </StackLayout>
+      </Grid>
 
-      <StackLayout
+      <Grid
+        Padding="4"
         VerticalOptions="End"
-        Orientation="Horizontal">
+        HorizontalOptions="FillAndExpand"
+        ColumnDefinitions="auto, auto, *, auto">
         <Button
+          Grid.Column="0"
           Clicked="OnPlayButtonClicked"
           Text="&#xF040C;"
           FontFamily="materialdesignicons"
           FontSize="18"
+          BackgroundColor="Transparent"
           TextColor="White"
           WidthRequest="60"
           HeightRequest="60" 
+          HorizontalOptions="Start"
           IsVisible="{Binding IsPlaying, Source={RelativeSource AncestorType={x:Type mediaCustomTransport:MainPage}}, Converter={StaticResource BoolConverter}}"/>
         <Button
+          Grid.Column="0"
           Clicked="OnPauseButtonClicked"
           Text="&#xF03E5;"
           FontFamily="materialdesignicons"
           FontSize="18"
+          BackgroundColor="Transparent"
           TextColor="White"
           WidthRequest="60"
           HeightRequest="60"
+          HorizontalOptions="Start"
           IsVisible="{Binding IsPlaying, Source={RelativeSource AncestorType={x:Type mediaCustomTransport:MainPage}}}"/>
         <Label 
+          Grid.Column="1"
           BindingContext="{x:Reference MediaPlayer}"
           VerticalOptions="Center"
           VerticalTextAlignment="Center"
+          HorizontalOptions="Start"
           Text="{Binding Position, StringFormat='{0:mm\\:ss}'}"
           TextColor="White"/>
         <Slider
+          x:Name="SeekSlider"
+          Grid.Column="2"
           BindingContext="{x:Reference MediaPlayer}"
           HeightRequest="16"
           MinimumTrackColor="White"
           MaximumTrackColor="LightGray"
           ThumbColor="White"
-          HorizontalOptions="FillAndExpand"
+          HorizontalOptions="Fill"
           VerticalOptions="Center"
+          DragCompleted="SeekSlider_OnDragCompleted"
           Maximum="{Binding Duration, Converter={StaticResource TimeSpanConverter}}"
           Value="{Binding Position, Converter={StaticResource TimeSpanConverter}}" />
         <Label 
+          Grid.Column="3"
           BindingContext="{x:Reference MediaPlayer}"
           VerticalOptions="Center"
           VerticalTextAlignment="Center"
           Text="{Binding Duration, StringFormat='{0:mm\\:ss}'}"
           TextColor="White"/>
-      </StackLayout>
+      </Grid>
 
-    </StackLayout>
+    </VerticalStackLayout>
   </Grid>
 
 </ContentPage>

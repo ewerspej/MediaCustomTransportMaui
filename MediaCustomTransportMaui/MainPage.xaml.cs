@@ -45,5 +45,10 @@ public partial class MainPage : ContentPage
     {
         MediaPlayer.SeekTo(TimeSpan.FromSeconds(120.0));
     }
+
+    private void SeekSlider_OnDragCompleted(object sender, EventArgs e)
+    {
+        MediaPlayer.SeekTo(TimeSpan.FromSeconds(SeekSlider.Value));
+    }
 }
 
